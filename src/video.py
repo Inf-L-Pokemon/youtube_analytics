@@ -13,13 +13,19 @@ class Video:
             .list(part="snippet,statistics,contentDetails,topicDetails", id=self.video_id)
             .execute()
         )
-        self.video_title = video_response["items"][0]["snippet"]["title"]
-        self.url = "https://youtu.be/" + self.video_id
-        self.view_count = video_response["items"][0]["statistics"]["viewCount"]
-        self.like_count = video_response["items"][0]["statistics"]["likeCount"]
+        try:
+            self.title = video_response["items"][0]["snippet"]["title"]
+            self.url = "https://youtu.be/" + self.video_id
+            self.view_count = video_response["items"][0]["statistics"]["viewCount"]
+            self.like_count = video_response["items"][0]["statistics"]["likeCount"]
+        except IndexError:
+            self.title = None
+            self.url = None
+            self.view_count = None
+            self.like_count = None
 
     def __str__(self):
-        return self.video_title
+        return self.title
 
 
 class PLVideo(Video):
